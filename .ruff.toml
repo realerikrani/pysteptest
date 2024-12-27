@@ -1,0 +1,40 @@
+lint.select = ["ALL"]
+lint.ignore = [
+    "ISC001",
+    "COM812",  # [*] Trailing comma missing
+    "D100",    # Missing docstring in public module
+    "D101",    # Missing docstring in public class
+    "D103",    # Missing docstring in public function
+    "EM101",   # Exception must not use a string literal, assign to variable first
+    "TRY003"  # Avoid specifying long messages outside the exception class
+]
+lint.per-file-ignores = {"__init__*" = [
+    "D104", # Missing docstring in public package
+], "test*" = [
+    "ANN201", # Missing return type annotation for public function
+    "F403", # star-import -- unable to detect undefined names
+    "F405", # star-import
+    "S101"  # Use of `assert` detected
+]}
+
+
+lint.pydocstyle.convention = "google"
+
+line-length = 88
+
+target-version = "py310"
+
+lint.mccabe = { "max-complexity" = 10 }
+exclude = [
+    ".eggs",
+    ".git",
+    ".mypy_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "build",
+    "dist",
+    "venv",
+]

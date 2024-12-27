@@ -1,0 +1,21 @@
+.PHONY: lint
+lint:
+	python3 -m ruff check .
+	python3 -m ruff format . --check
+	MYPYPATH=src python3 -m mypy --namespace-packages --explicit-package-bases src
+
+.PHONY: pin
+pin:
+	python3 -m pip install --only-binary :all: --upgrade pip-tools pip wheel setuptools
+	python3 -m piptools compile --strip-extras --quiet --generate-hashes --upgrade requirements/prod.in -o requirements/prod.txt
+	python3 -m piptools compile --strip-extras --quiet --generate-hashes --upgrade requirements/dev.in -o requirements/dev.txt
+
+.PHONY: install
+install:
+	python3 -m pip install --only-binary :all: --upgrade pip wheel setuptools
+	python3 -m pip install --only-binary :all: --require-hashes -r requirements/dev.txt -r requirements/prod.txt
+	python3 -m pip check
+
+.PHONY: build
+build:
+	python3 -m build
