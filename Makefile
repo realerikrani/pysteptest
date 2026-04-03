@@ -6,16 +6,17 @@ lint:
 
 .PHONY: pin
 pin:
-	python3 -m pip install --only-binary :all: --upgrade pip-tools pip wheel setuptools
-	python3 -m piptools compile --strip-extras --quiet --generate-hashes --upgrade requirements/prod.in -o requirements/prod.txt
-	python3 -m piptools compile --strip-extras --quiet --generate-hashes --upgrade requirements/dev.in -o requirements/dev.txt
+	python3 -m pip install --only-binary :all: --upgrade pip
+	python3 -m pip lock -r requirements/prod.in -o requirements/pylock.prod.toml
+	python3 -m pip lock -r requirements/prod.in -r requirements/dev.in -o requirements/pylock.dev.toml
 
 .PHONY: install
 install:
-	python3 -m pip install --only-binary :all: --upgrade pip wheel setuptools
-	python3 -m pip install --only-binary :all: --require-hashes -r requirements/dev.txt -r requirements/prod.txt
+	python3 -m pip install --only-binary :all: uv
+	python3 -m uv pip sync --preview-features pylock requirements/pylock.dev.toml
 	python3 -m pip check
 
 .PHONY: build
 build:
+	python3 -m pip install --only-binary :all: --upgrade build wheel
 	python3 -m build
