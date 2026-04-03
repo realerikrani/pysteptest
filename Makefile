@@ -7,7 +7,6 @@ lint:
 .PHONY: pin
 pin:
 	python3 -m pip install --only-binary :all: --upgrade pip
-	python3 -m pip lock -r requirements/prod.in -o requirements/pylock.prod.toml
 	python3 -m pip lock -r requirements/prod.in -r requirements/dev.in -o requirements/pylock.dev.toml
 
 .PHONY: install
