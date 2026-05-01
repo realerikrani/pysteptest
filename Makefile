@@ -6,16 +6,15 @@ lint:
 
 .PHONY: pin
 pin:
-	python3 -m pip install --only-binary :all: --upgrade pip
-	python3 -m pip lock -r requirements/prod.in -r requirements/dev.in -o requirements/pylock.dev.toml
+	python3 -m pip install --only-binary :all: --upgrade 'pip == 26.1'
+	python3 -m pip lock --uploaded-prior-to=P2D -r requirements/prod.in -r requirements/dev.in -o requirements/pylock.dev.toml
 
 .PHONY: install
 install:
-	python3 -m pip install --only-binary :all: uv
-	python3 -m uv pip sync --preview-features pylock requirements/pylock.dev.toml
+	python3 -m pip install --uploaded-prior-to=P2D --only-binary :all: --no-deps -r requirements/pylock.dev.toml
 	python3 -m pip check
 
 .PHONY: build
 build:
-	python3 -m pip install --only-binary :all: --upgrade build wheel
+	python3 -m pip install --uploaded-prior-to=P2D --only-binary :all: --upgrade build wheel
 	python3 -m build
